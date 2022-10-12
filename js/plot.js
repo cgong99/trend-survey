@@ -15,7 +15,7 @@ var user_data = []
 
 function render() {
 
-  toggleSubmit()
+  disableSubmit()
   // create our outer SVG element with a size of 500x100 and select it
   var svg = d3.select("#scatter_area")
   .attr("align","center")
@@ -127,7 +127,7 @@ function render() {
     if (!update) user_data.push({x: x, y: y});
     
     if (user_data.length > expect_input_num) {
-      toggleSubmit()
+      enableSubmit()
     }
   }
 
@@ -192,6 +192,14 @@ function render() {
 }
 
 render()
+
+function enableSubmit() {
+  document.getElementById("submit-button").disabled = false
+}
+
+function disableSubmit() {
+  document.getElementById("submit-button").disabled = true
+}
 
 function toggleSubmit() {
   document.getElementById("submit-button").disabled = !document.getElementById("submit-button").disabled;
