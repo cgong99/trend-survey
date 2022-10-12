@@ -7,8 +7,14 @@ height = 400 - margin.top - margin.bottom;
 xrange = [0,100]
 x_start = 60
 yrange = [0,100]
-
+page = 0
 expect_input_num = 3
+
+var all_data = [[{x:10, y:20}, {x:30, y:90}, {x:50, y:50}], [{x:10, y:10}, {x:30, y:50}, {x:50, y:60}], [{x:10, y:70}, {x:30, y:80}, {x:50, y:30}]]
+var user_data = []
+
+function render() {
+
 // create our outer SVG element with a size of 500x100 and select it
 var svg = d3.select("#scatter_area")
 .attr("align","center")
@@ -63,10 +69,12 @@ svg
 .call(d3.axisLeft(y));
 
 
-// Create data
-var data = [ {x:10, y:20}, {x:30, y:90}, {x:50, y:50} ]
-var user_data = []
+// Set data by page
+// var data = [ {x:10, y:20}, {x:30, y:90}, {x:50, y:50} ]
+var data = all_data[page]
+user_data = []
 user_data.push(data[data.length-1])
+
 // Add dots 
 svg
 .selectAll("whatever")
@@ -106,6 +114,7 @@ for (let i = x_start; i <= xrange[1]; i+=10) {
     .on("mouseleave",  function(){d3.select(this).transition().duration(100).ease(d3.easeLinear).style("opacity", 0).attr("r",10)})
   }
 }
+
 
 
 
@@ -182,6 +191,9 @@ svg
       )
 })
 
+}
+
+render()
 
 function enableSubmit() {
   document.getElementById("submit-button").disabled = false;
@@ -212,6 +224,14 @@ function enableSubmit() {
 
 function SubmitEvent() {
   console.log("submit")
-  d3.selectAll('*').remove()
+  d3.selectAll('#plot').remove()
+  page += 1
   console.log(user_data)
+  if (page < all_data.length) {
+    render() // move to the next question
+  } else {
+    d3.selectAll('#question').remove()
+    document.getElementById("end").style.display = "inline";
+  }
+
 }

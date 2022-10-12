@@ -9,9 +9,13 @@
 </head>
 
 <!-- Add a svg area, empty -->
-<div id="scatter_area"></div>
-<div class="below-plot">
-  <button type="submit" class="plot-submit" id = "submit-button" onclick="SubmitEvent()" disabled>Submit</button>
+<div id="question">
+  <div id="scatter_area"></div>
+  <div class="below-plot">
+    <button type="submit" class="plot-submit" id = "submit-button" onclick="SubmitEvent()" disabled>Submit</button>
+  </div>
 </div>
+
+<div id="end" style="display: none;"><h2>Thank you for answering all the questions!</h2></div>
 
 <script src='js/plot.js'></script>
