@@ -125,7 +125,9 @@ function render() {
       }
     }
     if (!update) user_data.push({x: x, y: y});
-    
+    console.log(user_data)
+    user_data.sort(function(a,b){return a.x - b.x})
+    console.log(user_data)
     if (user_data.length > expect_input_num) {
       enableSubmit()
     }
