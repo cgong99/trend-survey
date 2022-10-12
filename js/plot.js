@@ -7,6 +7,8 @@ height = 400 - margin.top - margin.bottom;
 xrange = [0,100]
 x_start = 60
 yrange = [0,100]
+
+expect_input_num = 3
 // create our outer SVG element with a size of 500x100 and select it
 var svg = d3.select("#scatter_area")
 .attr("align","center")
@@ -51,12 +53,11 @@ svg.append('g')
 .attr('class', 'y axis-grid')
 .call(yAxisGrid);
 
-
+// x y axis
 svg
 .append('g')
 .attr("transform", "translate(" + 0 + "," + height + ")")
-.call(d3.axisBottom(x));
-
+.call(d3.axisBottom(x)); // remove number .tickFormat("");
 svg
 .append('g')
 .call(d3.axisLeft(y));
@@ -97,12 +98,12 @@ for (let i = x_start; i <= xrange[1]; i+=10) {
     .attr("id", "hint-point")
     .attr("cx", x(i))
     .attr("cy", y(j))
-    .attr("r", 8)
+    .attr("r", 10)
     .style("opacity", 0)
     .on("mouseenter", function(){
       d3.select(this).transition().duration(100).ease(d3.easeLinear).style("opacity", 0.8).attr("r",9);
     })
-    .on("mouseleave",  function(){d3.select(this).transition().duration(100).ease(d3.easeLinear).style("opacity", 0).attr("r",8)})
+    .on("mouseleave",  function(){d3.select(this).transition().duration(100).ease(d3.easeLinear).style("opacity", 0).attr("r",10)})
   }
 }
 
@@ -118,6 +119,9 @@ function update_data(x, y) { // each x value can only have one data
   }
   if (!update) user_data.push({x: x, y: y});
   
+  if (user_data.length > expect_input_num) {
+    enableSubmit()
+  }
 }
 
 
@@ -179,6 +183,9 @@ svg
 })
 
 
+function enableSubmit() {
+  document.getElementById("submit-button").disabled = false;
+}
 
 
 // svg
@@ -202,3 +209,9 @@ svg
 // svg.selectAll("#hint-circle")
 //   .on("mouseleave", function(){ d3.selectAll("#hint-circle").remove()})
 
+
+function SubmitEvent() {
+  console.log("submit")
+  d3.selectAll('*').remove()
+  console.log(user_data)
+}
