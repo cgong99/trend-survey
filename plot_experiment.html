@@ -1,112 +1,16 @@
-<!-- Code from d3-graph-gallery.com -->
+<!-- Created by Chen Gong 10/2022 -->
+
 <!DOCTYPE html>
 <meta charset="utf-8">
+<head>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://d3js.org/d3.v4.js"></script>
+</head>
 
-<!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js"></script>
 
 <!-- Add a svg area, empty -->
 <div id="scatter_area"></div>
 
-<!-- 
-<svg width="100" height="100">
-  <circle cx="50" cy="25" r="25" fill="green"/>
-  <circle cx="50" cy="75" r="25" fill="orange"/>
-</svg> -->
-<style>
-  .axis-grid line {
-  stroke: #def;
-}
-</style>
 
-<script>
-  // set the dimensions and margins of the graph
-  var margin = {top: 10, right: 40, bottom: 30, left: 30},
-    width = 450 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
-  
-  
-  // create our outer SVG element with a size of 500x100 and select it
-  var svg = d3.select("#scatter_area")
-  .append("svg")
-    .attr("id", "plot")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  // translate this svg element to leave some margin.
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  // X scale and Axis
-  var x = d3.scaleLinear()
-      .domain([0, 100])         // This is the min and the max of the data: 0 to 100 if percentages
-      .range([0, width]);       // This is the corresponding value I want in Pixel
-
-
-
-  // X scale and Axis
-  var y = d3.scaleLinear()
-      .domain([0, 100])         // This is the min and the max of the data: 0 to 100 if percentages
-      .range([height, 0]);       // This is the corresponding value I want in Pixel
-
-
-  const xAxisGrid = d3.axisBottom(x).tickSize(-height).tickFormat('').ticks(10);
-  const yAxisGrid = d3.axisLeft(y).tickSize(-width).tickFormat('').ticks(10);
-
-  // Create grids.
-  svg.append('g')
-    .attr('class', 'x axis-grid')
-    .attr('transform', 'translate(0,' + height + ')')
-    .call(xAxisGrid);
-  svg.append('g')
-    .attr('class', 'y axis-grid')
-    .call(yAxisGrid);
-
-
-  svg
-  .append('g')
-  .attr("transform", "translate(0," + height + ")")
-  .call(d3.axisBottom(x));
-
-  svg
-  .append('g')
-  .call(d3.axisLeft(y));
-
-
-  // Create data
-  var data = [ {x:10, y:20}, {x:30, y:90}, {x:50, y:50} ]
-  // Add 3 dots for 0, 50 and 100%
-  svg
-    .selectAll("whatever")
-    .data(data)
-    .enter()
-    .append("circle")
-      .attr("cx", function(d){ return x(d.x) })
-      .attr("cy", function(d){ return y(d.y) })
-      .attr("r", 7)
-  
-  // Add the line
-  svg.append("path")
-    .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", "black")
-    .attr("stroke-width", 1.5)
-    .attr("d", d3.line()
-      .curve(d3.curveNatural) // Just add that to have a curve instead of segments
-      .x(function(d) { return x(d.x) })
-      .y(function(d) { return y(d.y) })
-      )
-
-  
-  svg
-    .attr("pointer-events", "all")  // fix the issue on call sometime doesn't work
-    .on("click", function() {
-      let pos = d3.mouse(this);
-      console.log(pos)
-      d3.select(this)
-        .append("circle")
-        .attr("cx", pos[0])
-        .attr("cy", pos[1])
-        .attr("r", 7)
-    })
-
-</script>
+<script src='js/plot.js'></script>
