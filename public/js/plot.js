@@ -1,6 +1,30 @@
 // Created by Chen Gong 10/2022
 
 // import Timer from "./timer.js";
+// =====================================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore.js';
+const firebaseConfig = {
+  apiKey: "AIzaSyAjyjdZQxPKki7o_bcD28DIvNvK1YDM7ZU",
+  authDomain: "trend-survey.firebaseapp.com",
+  projectId: "trend-survey",
+  storageBucket: "trend-survey.appspot.com",
+  messagingSenderId: "269130863233",
+  appId: "1:269130863233:web:a9444b1824f73455347380"
+};
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+try {
+  const docRef = await addDoc(collection(db, "users"), {
+    plot1: [{x: 60, y: 100}, {x: 70, y: 100}, {x: 80, y: 100}, {x: 90, y: 100}, {x: 100, y: 100}, {time: 100}],
+    plot2: [{x: 60, y: 100}, {x: 70, y: 100}, {x: 80, y: 100}, {x: 90, y: 100}, {x: 100, y: 100}, {time: 100}]
+  });
+  console.log("Document written with ID: ", docRef.id);
+} catch (e) {
+  console.error("Error adding document: ", e);
+}
+// =====================================================
 
 const margin = {top: 10, right: 40, bottom: 30, left: 30}
 const width = 450 - margin.left - margin.right
@@ -295,5 +319,4 @@ function Submit() {
     d3.selectAll('#question').remove()
     document.getElementById("end").style.display = "inline";
   }
-
 }
