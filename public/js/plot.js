@@ -308,7 +308,7 @@ function toggleSubmit() {
 //   .on("mouseleave", function(){ d3.selectAll("#hint-circle").remove()})
 
 
-function Submit() {
+function SubmitEvent() {
   console.log("submit")
   d3.selectAll('#plot').remove()
   page += 1
