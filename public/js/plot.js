@@ -220,9 +220,7 @@ function render() {
       var pos_y = valid_pos[1]
       console.log("enter")
       update_data(pos_x, pos_y)
-      old_point = d3.selectAll("#x" + String(pos_x))
-      old_point.remove()
-      console.log(old_point)
+      d3.selectAll("#x" + String(pos_x)).remove()
       d3.select(this)
         .append("circle")
         .attr("id", "x" + String(pos_x))
@@ -286,7 +284,7 @@ function toggleSubmit() {
 //   .on("mouseleave", function(){ d3.selectAll("#hint-circle").remove()})
 
 
-function SubmitEvent() {
+function Submit() {
   console.log("submit")
   d3.selectAll('#plot').remove()
   page += 1
