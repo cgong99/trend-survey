@@ -2,15 +2,15 @@
 
 // import Timer from "./timer.js";
 
-var margin = {top: 10, right: 40, bottom: 30, left: 30},
-width = 450 - margin.left - margin.right,
-height = 400 - margin.top - margin.bottom;
+const margin = {top: 10, right: 40, bottom: 30, left: 30}
+const width = 450 - margin.left - margin.right
+const height = 400 - margin.top - margin.bottom
 
-xrange = [0,100]
-x_start = 60
-yrange = [0,100]
-page = 0
-expect_input_num = 3
+var xrange = [0,100]
+var x_start = 60
+var yrange = [0,100]
+var page = 0
+var expect_input_num = 3
 
 var all_data = [[{x:10, y:20}, {x:30, y:90}, {x:50, y:50}], [{x:10, y:10}, {x:30, y:50}, {x:50, y:60}], [{x:10, y:70}, {x:30, y:80}, {x:50, y:30}]]
 var user_data = []
