@@ -1,7 +1,5 @@
 // Created by Chen Gong 10/2022
 
-// import Timer from "./timer.js";
-
 var margin = {top: 10, right: 40, bottom: 30, left: 30},
 width = 450 - margin.left - margin.right,
 height = 400 - margin.top - margin.bottom;
@@ -12,53 +10,13 @@ yrange = [0,100]
 page = 0
 expect_input_num = 3
 
-var all_data = [[{x:10, y:20}, {x:30, y:90}, {x:50, y:50}], [{x:10, y:10}, {x:30, y:50}, {x:50, y:60}], [{x:10, y:70}, {x:30, y:80}, {x:50, y:30}]]
+var all_data = [[{x:0, y:15}, {x:10, y:20}, {x:20, y:40},{x:30, y:90},{x:40, y:70}, {x:50, y:50}], 
+[{x:0, y:15}, {x:10, y:10},{x:20, y:15}, {x:30, y:50}, {x:40, y:55}, {x:50, y:60}]]
 var user_data = []
 
-// var timer = new Timer(updateHtmlTimer, 100)
-var start = Date.now();
-function Timer(fn, t) {
-
-  var timerObj = setInterval(fn, t);
-
-  this.stop = function() {
-      if (timerObj) {
-          clearInterval(timerObj);
-          timerObj = null;
-      }
-      return this;
-  }
-
-  // start timer using current settings (if it's not already running)
-  this.start = function() {
-    start = Date.now();
-    console.log("restart")
-      if (!timerObj) {
-          this.stop();
-          timerObj = setInterval(fn, t);
-      }
-      return this;
-  }
-
-  // start with new or original interval, stop current interval
-  this.restart = function() {
-      console.log("1")
-      return this.stop().start();
-  }
-}
-
-function updateHtmlTimer() {
-  var delta = Date.now() - start; // milliseconds elapsed since start
-  time = (Math.round(delta/1000 * 100) / 100).toFixed(2) // format print time
-  // console.log(time)
-  document.getElementById("timer").innerHTML = "Time: " + time;
-}
-
-var timer = new Timer(updateHtmlTimer, 100)
-
 function render() {
-  timer.restart()
-  // disableSubmit()
+
+  disableSubmit()
   // create our outer SVG element with a size of 500x100 and select it
   var svg = d3.select("#scatter_area")
   .attr("align","center")
@@ -129,31 +87,31 @@ function render() {
     .attr("cy", function(d){ return y(d.y) })
     .attr("r", 5)
 
-  // Add the initial line
-  svg.append("path")
-  .attr("id", "line")
-  .datum(data)
-  .attr("fill", "none")
-  .attr("stroke", "black")
-  .attr("stroke-width", 1.5)
-  .attr("d", d3.line()
-    .curve(d3.curveNatural) // Just add that to have a curve instead of segments
-    .x(function(d) { return x(d.x) })
-    .y(function(d) { return y(d.y) })
-    )
-  
-  //   // Add the area
+  // // Add the initial line
   // svg.append("path")
-  //   .attr("id", "line")
-  //   .datum(data)
-  //   .attr("fill", "#cce5df")
-  //   .attr("stroke", "#69b3a2")
-  //   .attr("stroke-width", 1.5)
-  //   .attr("d", d3.area()
-  //     .x(function(d) { return x(d.x) })
-  //     .y0(y(0))
-  //     .y1(function(d) { return y(d.y) })
-  //     )
+  // .attr("id", "line")
+  // .datum(data)
+  // .attr("fill", "none")
+  // .attr("stroke", "black")
+  // .attr("stroke-width", 1.5)
+  // .attr("d", d3.line()
+  //   .curve(d3.curveNatural) // Just add that to have a curve instead of segments
+  //   .x(function(d) { return x(d.x) })
+  //   .y(function(d) { return y(d.y) })
+  //   )
+  
+    // Add the area
+  svg.append("path")
+    .attr("id", "line")
+    .datum(data)
+    .attr("fill", "#cce5df")
+    .attr("stroke", "#69b3a2")
+    .attr("stroke-width", 1.5)
+    .attr("d", d3.area()
+      .x(function(d) { return x(d.x) })
+      .y0(y(0))
+      .y1(function(d) { return y(d.y) })
+      )
 
 
   // create all hint point transparent for now, listen for mouse event 
@@ -174,17 +132,17 @@ function render() {
 
   function update_data(x, y) { // each x value can only have one data
     var update = false
-    for (let i=0; i < user_data.length; i++) {
-      if (user_data[i].x == x) {
+    for (let i=0; i < data.length; i++) {
+      if (data[i].x == x) {
         update = true
-        user_data[i] = {x: x, y:y}
+        data[i] = {x: x, y:y}
       }
     }
-    if (!update) user_data.push({x: x, y: y});
-    console.log(user_data)
-    user_data.sort(function(a,b){return a.x - b.x})
-    console.log(user_data)
-    if (user_data.length > expect_input_num) {
+    if (!update) data.push({x: x, y: y});
+    // console.log(user_data)
+    data.sort(function(a,b){return a.x - b.x})
+    // console.log(user_data)
+    if (data.length > 5+ expect_input_num) {
       enableSubmit()
     }
   }
@@ -232,18 +190,19 @@ function render() {
     }
     // remove old curve
     d3.selectAll("#user_path").remove()
+    d3.selectAll("#line").remove()
     // add new curve using all selected points
     d3.select(this)
       .append("path")
       .attr("id", "user_path")
-      .datum(user_data)
-      .attr("fill", "none")
-      .attr("stroke", "black")
+      .datum(data)
+      .attr("fill", "#cce5df")
+      .attr("stroke", "#69b3a2")
       .attr("stroke-width", 1.5)
-      .attr("d", d3.line()
-        .curve(d3.curveNatural) // Just add that to have a curve instead of segments
+      .attr("d", d3.area()
         .x(function(d) { return x(d.x) })
-        .y(function(d) { return y(d.y) })
+        .y0(y(0))
+        .y1(function(d) { return y(d.y) })
         )
   })
 
