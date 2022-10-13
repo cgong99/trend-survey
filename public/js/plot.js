@@ -49,7 +49,7 @@ function Timer(fn, t) {
 
 function updateHtmlTimer() {
   var delta = Date.now() - start; // milliseconds elapsed since start
-  time = (Math.round(delta/1000 * 100) / 100).toFixed(2) // format print time
+  var time = (Math.round(delta/1000 * 100) / 100).toFixed(2) // format print time
   // console.log(time)
   document.getElementById("timer").innerHTML = "Time: " + time;
 }
@@ -197,7 +197,7 @@ function render() {
   function valid_mouse_pos(raw_x, raw_y) {
     for (let i = x_start; i <= xrange[1]; i+=10) {
       for (let j = 0; j <= yrange[1]; j+=10) {
-        dis = distance(orignal_x(raw_x), orignal_y(raw_y), i, j);
+        var dis = distance(orignal_x(raw_x), orignal_y(raw_y), i, j);
         if (dis <= 3) {
           console.log("valid")
           console.log(i,j);
