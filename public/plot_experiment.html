@@ -1,0 +1,43 @@
+<!-- Created by Chen Gong 10/2022 -->
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://d3js.org/d3.v4.js"></script>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAjyjdZQxPKki7o_bcD28DIvNvK1YDM7ZU",
+      authDomain: "trend-survey.firebaseapp.com",
+      projectId: "trend-survey",
+      storageBucket: "trend-survey.appspot.com",
+      messagingSenderId: "269130863233",
+      appId: "1:269130863233:web:a9444b1824f73455347380"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
+</head>
+
+<!-- Add a svg area, empty -->
+<div id="timer"></div>
+<div id="question">
+  <div id="scatter_area"></div>
+  <div class="below-plot">
+    <button type="submit" class="plot-submit" id = "submit-button" onclick="SubmitEvent()" >Submit</button>
+  </div>
+</div>
+
+<div id="end" style="display: none;"><h2>Thank you for answering all the questions!</h2></div>
+
+<script src="./js/timer.js" type="module"></script>
+<script src="./js/plot.js"></script>
+
