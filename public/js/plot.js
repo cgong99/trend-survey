@@ -24,7 +24,8 @@ try {
 } catch (e) {
   console.error("Error adding document: ", e);
 }
-// =====================================================
+
+// ============================================ set up plot scale =======================================
 
 const margin = {top: 10, right: 40, bottom: 30, left: 30}
 const width = 450 - margin.left - margin.right
@@ -36,9 +37,35 @@ var yrange = [0,100]
 var page = 0
 var expect_input_num = 3
 
-var all_data = [[{x:10, y:20}, {x:30, y:90}, {x:50, y:50}], [{x:10, y:10}, {x:30, y:50}, {x:50, y:60}], [{x:10, y:70}, {x:30, y:80}, {x:50, y:30}]]
+const colors = ["red", "green", "black"]
+const time = [2, 5]
+const randomColor = colors[Math.floor(Math.random() * colors.length)]; // choose a random color from red green black
+console.log(randomColor)
+var all_data = [[{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:60}], 
+                [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:50}], 
+                [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:40}]]
 var user_data = []
 
+// X scale and Axis
+var x = d3.scaleLinear()
+  .domain(xrange)         // This is the min and the max of the data: 0 to 100 if percentages
+  .range([0 , width]);       // This is the corresponding value I want in Pixel
+
+var orignal_x = d3.scaleLinear()
+  .domain([0,width])
+  .range(xrange)
+
+// X scale and Axis
+var y = d3.scaleLinear()
+  .domain(yrange)         // This is the min and the max of the data: 0 to 100 if percentages
+  .range([height, 0]);       // This is the corresponding value I want in Pixel
+
+var orignal_y = d3.scaleLinear()
+  .domain([height,0])
+  .range(yrange)
+
+
+// ========================================= define Timer  ==============================
 // var timer = new Timer(updateHtmlTimer, 100)
 var start = Date.now();
 function Timer(fn, t) {
@@ -66,7 +93,7 @@ function Timer(fn, t) {
 
   // start with new or original interval, stop current interval
   this.restart = function() {
-      console.log("1")
+      // console.log("1")
       return this.stop().start();
   }
 }
@@ -80,9 +107,29 @@ function updateHtmlTimer() {
 
 var timer = new Timer(updateHtmlTimer, 100)
 
-function render() {
+// sleep for ms time, use in async function
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// cover original plot after n seconds
+async function cover(svg, time) {
+  console.log("waiting")
+  await sleep(time*1000)
+  svg.append("rect")
+  .attr("x", x(-1))
+	.attr("y", y(80))
+	.attr("width", x(49)-x(-1))
+	.attr("height", y(20)- y(80))
+	.attr("fill", d3.color(randomColor));
+}
+
+
+// ============================================== render function ====================================
+function render(timeLimit) {
   timer.restart()
-  // disableSubmit()
+  document.getElementById("submit-button").addEventListener("click", submitPoints);
+  disableSubmit()
   // create our outer SVG element with a size of 500x100 and select it
   var svg = d3.select("#scatter_area")
   .attr("align","center")
@@ -97,23 +144,6 @@ function render() {
   // svg repositioning
   // $("svg").css({top: 100, left: 100, position:'absolute'});
 
-  // X scale and Axis
-  var x = d3.scaleLinear()
-    .domain(xrange)         // This is the min and the max of the data: 0 to 100 if percentages
-    .range([0 , width]);       // This is the corresponding value I want in Pixel
-
-  var orignal_x = d3.scaleLinear()
-    .domain([0,width])
-    .range(xrange)
-
-  // X scale and Axis
-  var y = d3.scaleLinear()
-    .domain(yrange)         // This is the min and the max of the data: 0 to 100 if percentages
-    .range([height, 0]);       // This is the corresponding value I want in Pixel
-
-  var orignal_y = d3.scaleLinear()
-    .domain([height,0])
-    .range(yrange)
 
   const xAxisGrid = d3.axisBottom(x).tickSize(-height).tickFormat('').ticks(10);
   const yAxisGrid = d3.axisLeft(y).tickSize(-width).tickFormat('').ticks(10);
@@ -152,13 +182,14 @@ function render() {
     .attr("cx", function(d){ return x(d.x) })
     .attr("cy", function(d){ return y(d.y) })
     .attr("r", 5)
+    .style("fill", d3.color(randomColor))
 
   // Add the initial line
   svg.append("path")
   .attr("id", "line")
   .datum(data)
   .attr("fill", "none")
-  .attr("stroke", "black")
+  .attr("stroke", randomColor)
   .attr("stroke-width", 1.5)
   .attr("d", d3.line()
     .curve(d3.curveNatural) // Just add that to have a curve instead of segments
@@ -189,6 +220,7 @@ function render() {
       .attr("cy", y(j))
       .attr("r", 10)
       .style("opacity", 0)
+      .style("fill", d3.color(randomColor))
       .on("mouseenter", function(){
         d3.select(this).transition().duration(100).ease(d3.easeLinear).style("opacity", 0.8).attr("r",9);
       })
@@ -232,6 +264,8 @@ function render() {
     return -1
   }
 
+  cover(svg, timeLimit)
+
   svg
   .attr("pointer-events", "all")  // fix the issue on call sometime doesn't work
   .on("click", function() {
@@ -251,6 +285,7 @@ function render() {
         .attr("cx", x(pos_x))
         .attr("cy", y(pos_y))
         .attr("r", 5)
+        .style("fill", d3.color(randomColor))
     }
     // remove old curve
     d3.selectAll("#user_path").remove()
@@ -260,7 +295,7 @@ function render() {
       .attr("id", "user_path")
       .datum(user_data)
       .attr("fill", "none")
-      .attr("stroke", "black")
+      .attr("stroke", randomColor)
       .attr("stroke-width", 1.5)
       .attr("d", d3.line()
         .curve(d3.curveNatural) // Just add that to have a curve instead of segments
@@ -271,7 +306,7 @@ function render() {
 
 }
 
-render()
+render(2)
 
 function enableSubmit() {
   document.getElementById("submit-button").disabled = false
@@ -308,13 +343,13 @@ function toggleSubmit() {
 //   .on("mouseleave", function(){ d3.selectAll("#hint-circle").remove()})
 
 
-function SubmitEvent() {
+function submitPoints() {
   console.log("submit")
   d3.selectAll('#plot').remove()
   page += 1
   console.log(user_data)
   if (page < all_data.length) {
-    render() // move to the next question
+    render(2) // move to the next question
   } else {
     d3.selectAll('#question').remove()
     document.getElementById("end").style.display = "inline";

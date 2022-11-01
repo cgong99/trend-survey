@@ -15,7 +15,7 @@ var all_data = [[{x:0, y:15}, {x:10, y:20}, {x:20, y:40},{x:30, y:90},{x:40, y:7
 var user_data = []
 
 function render() {
-
+  document.getElementById("submit-button").addEventListener("click", submitPoints);
   disableSubmit()
   // create our outer SVG element with a size of 500x100 and select it
   var svg = d3.select("#scatter_area")
@@ -245,7 +245,7 @@ function toggleSubmit() {
 //   .on("mouseleave", function(){ d3.selectAll("#hint-circle").remove()})
 
 
-function SubmitEvent() {
+function submitPoints() {
   console.log("submit")
   d3.selectAll('#plot').remove()
   page += 1
