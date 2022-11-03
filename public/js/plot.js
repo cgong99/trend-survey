@@ -159,7 +159,7 @@ fetch(data_path)
     var timeLimit = time[curr_plot["time"]]
     var plotType = curr_plot["plotType"]
     user_data = []
-    user_data.push(data[data.length-1])
+    user_data.push({x:data[data.length-1].x+0.4, y:data[data.length-1].y}) // add an offset to x to prevent overlapping
 
     document.getElementById("info").innerHTML = "trend: " + curr_plot["data"] + " "+ plotType + " " + curr_plot["time"];
 
