@@ -1,0 +1,62 @@
+{
+  "1": {
+    "data":"pos",
+    "plotType": "line",
+    "time":"short"
+  },
+  "2": {
+    "data":"neg",
+    "plotType": "line",
+    "time":"short"
+  },
+  "3": {
+    "data":"neu",
+    "plotType": "line",
+    "time":"short"
+  },
+  "4": {
+    "data":"pos",
+    "plotType": "area",
+    "time":"short"
+  },
+  "5": {
+    "data":"neg",
+    "plotType": "area",
+    "time":"short"
+  },
+  "6": {
+    "data":"neu",
+    "plotType": "area",
+    "time":"short"
+  },
+  "7": {
+    "data":"pos",
+    "plotType": "line",
+    "time":"long"
+  },
+  "8": {
+    "data":"neg",
+    "plotType": "line",
+    "time":"long"
+  },
+  "9": {
+    "data":"neu",
+    "plotType": "line",
+    "time":"long"
+  },
+  "10": {
+    "data":"pos",
+    "plotType": "area",
+    "time":"long"
+  },
+  "11": {
+    "data":"neg",
+    "plotType": "area",
+    "time":"long"
+  },
+  "12": {
+    "data":"neu",
+    "plotType": "area",
+    "time":"long"
+  }
+}
