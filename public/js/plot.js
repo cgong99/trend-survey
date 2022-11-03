@@ -15,15 +15,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-// try {
-//   const docRef = await addDoc(collection(db, "users"), {
-//     plot1: [{x: 60, y: 100}, {x: 70, y: 100}, {x: 80, y: 100}, {x: 90, y: 100}, {x: 100, y: 100}, {time: 100}],
-//     plot2: [{x: 60, y: 100}, {x: 70, y: 100}, {x: 80, y: 100}, {x: 90, y: 100}, {x: 100, y: 100}, {time: 100}]
-//   });
-//   console.log("Document written with ID: ", docRef.id);
-// } catch (e) {
-//   console.error("Error adding document: ", e);
-// }
+
 
 
 // ============================================ set up plot scale and variables =======================================
@@ -36,7 +28,7 @@ var xrange = [0,100]
 var x_start = 60
 var yrange = [0,100]
 var page = 0
-var expect_input_num = 5
+var expect_input_num = 1
 
 // X scale and Axis
 var x = d3.scaleLinear()
@@ -111,7 +103,7 @@ async function cover(svg, time) {
   .attr("x", x(-1))
 	.attr("y", y(80))
 	.attr("width", x(49)-x(-1))
-	.attr("height", y(20)- y(80))
+	.attr("height", y(0)- y(80))
 	.attr("fill", d3.color(randomColor));
 }
 
@@ -140,7 +132,15 @@ const data_path = 'https://raw.githubusercontent.com/cgong99/trend-survey/main/p
 fetch(data_path)
   .then((response) => response.json())
   .then((data) => {
-  const all_plots = data;
+  console.log(data)
+  var all_plots = []
+  
+  for (let key in data) {
+
+    all_plots.push(data[key])
+  }
+  all_plots = shuffleArray(all_plots)
+  console.log(all_plots)
 
   render()
 
@@ -150,21 +150,18 @@ fetch(data_path)
     document.getElementById("submit-button").addEventListener("click", submitPoints);
     updatePlotCount(page+1)
     disableSubmit()
-
     // Set data by page
     // var data = [ {x:10, y:20}, {x:30, y:90}, {x:50, y:50} ]
     console.log("render")
-    console.log(typeof all_plots)
-    console.log(Object.keys(all_plots))
-    var curr_plot = all_plots[page+1]
+    var curr_plot = all_plots[page]
     console.log(curr_plot)
     var data = data_map[curr_plot["data"]]
     var timeLimit = time[curr_plot["time"]]
     var plotType = curr_plot["plotType"]
-    console.log(data)
     user_data = []
     user_data.push(data[data.length-1])
 
+    document.getElementById("info").innerHTML = "trend: " + curr_plot["data"] + " "+ plotType + " " + curr_plot["time"];
 
     // create our outer SVG element with a size of 500x100 and select it
     var svg = d3.select("#scatter_area")
@@ -225,31 +222,35 @@ fetch(data_path)
     
     // console.log(data[data.length-1].x, data[data.length-1].y)
 
-    // Add the initial line
+    if (plotType == "line") {
+      // Add the initial line
+      svg.append("path")
+      .attr("id", "line")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", randomColor)
+      .attr("stroke-width", 1.5)
+      .attr("d", d3.line()
+        .curve(d3.curveNatural) // Just add that to have a curve instead of segments
+        .x(function(d) { return x(d.x) })
+        .y(function(d) { return y(d.y) })
+        )
+    } else {
+      // Add the area
     svg.append("path")
-    .attr("id", "line")
-    .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", randomColor)
-    .attr("stroke-width", 1.5)
-    .attr("d", d3.line()
-      .curve(d3.curveNatural) // Just add that to have a curve instead of segments
-      .x(function(d) { return x(d.x) })
-      .y(function(d) { return y(d.y) })
-      )
-    
-    //   // Add the area
-    // svg.append("path")
-    //   .attr("id", "line")
-    //   .datum(data)
-    //   .attr("fill", "#cce5df")
-    //   .attr("stroke", "#69b3a2")
-    //   .attr("stroke-width", 1.5)
-    //   .attr("d", d3.area()
-    //     .x(function(d) { return x(d.x) })
-    //     .y0(y(0))
-    //     .y1(function(d) { return y(d.y) })
-    //     )
+      .attr("id", "line")
+      .datum(data)
+      .attr("fill", randomColor)
+      .attr("opacity", 0.6)
+      .attr("stroke", randomColor)
+      .attr("stroke-width", 1.5)
+      .attr("d", d3.area()
+        .x(function(d) { return x(d.x) })
+        .y0(y(0))
+        .y1(function(d) { return y(d.y) })
+        )
+    }
+
 
 
     // create all hint point transparent for now, listen for mouse event 
@@ -332,7 +333,8 @@ fetch(data_path)
       // remove old curve
       d3.selectAll("#user_path").remove()
       // add new curve using all selected points
-      d3.select(this)
+      if (plotType == "line") {
+        d3.select(this)
         .append("path")
         .attr("id", "user_path")
         .datum(user_data)
@@ -344,6 +346,20 @@ fetch(data_path)
           .x(function(d) { return x(d.x) })
           .y(function(d) { return y(d.y) })
           )
+      } else {
+        svg.append("path")
+        .attr("id", "user_path")
+        .datum(user_data)
+        .attr("fill", randomColor)
+        .attr("opacity", 0.6)
+        .attr("stroke", randomColor)
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.area()
+          .x(function(d) { return x(d.x) })
+          .y0(y(0))
+          .y1(function(d) { return y(d.y) })
+          )
+      }
     })
 
 
@@ -387,19 +403,38 @@ fetch(data_path)
   //   .on("mouseleave", function(){ d3.selectAll("#hint-circle").remove()})
 
 
-
-  function submitPoints() {
+  async function submitPoints() {
     console.log("submit")
     d3.selectAll('#plot').remove()
     page += 1
-    console.log(page)
+    console.log(user_data)
     if (page < Object.keys(all_plots).length) {
-      // await sleep(2000)
+      var plot_number = "plot" + page
+      try {
+        const docRef = await addDoc(collection(db, "users"), {
+          [plot_number]: user_data
+        });
+        console.log("Document written with ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
       render() // move to the next question
     } else {
       d3.selectAll('#question').remove()
       document.getElementById("end").style.display = "inline";
     }
   }
-
 });
+
+
+
+/* Randomize array in-place using Durstenfeld shuffle algorithm */
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+  }
+  return array
+}
