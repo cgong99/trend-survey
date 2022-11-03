@@ -15,15 +15,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-try {
-  const docRef = await addDoc(collection(db, "users"), {
-    plot1: [{x: 60, y: 100}, {x: 70, y: 100}, {x: 80, y: 100}, {x: 90, y: 100}, {x: 100, y: 100}, {time: 100}],
-    plot2: [{x: 60, y: 100}, {x: 70, y: 100}, {x: 80, y: 100}, {x: 90, y: 100}, {x: 100, y: 100}, {time: 100}]
-  });
-  console.log("Document written with ID: ", docRef.id);
-} catch (e) {
-  console.error("Error adding document: ", e);
-}
+
 
 // ============================================ set up plot scale =======================================
 
@@ -343,12 +335,21 @@ function toggleSubmit() {
 //   .on("mouseleave", function(){ d3.selectAll("#hint-circle").remove()})
 
 
-function submitPoints() {
+async function submitPoints() {
   console.log("submit")
   d3.selectAll('#plot').remove()
   page += 1
   console.log(user_data)
   if (page < all_data.length) {
+    var plot_number = "plot" + page
+    try {
+      const docRef = await addDoc(collection(db, "users"), {
+        [plot_number]: user_data
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
     render(2) // move to the next question
   } else {
     d3.selectAll('#question').remove()
