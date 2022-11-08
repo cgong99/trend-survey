@@ -16,8 +16,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-
-
 // ============================================ set up plot scale and variables =======================================
 
 const margin = {top: 10, right: 40, bottom: 30, left: 30}
@@ -31,6 +29,15 @@ var page = 0
 var plotInfo = ""
 var expect_input_num = 5       // enable submit after expected number
 var uuid = Date.now()
+
+var curr_url = new URL(window.location.href)
+var user_id = curr_url.searchParams.get("identifier");
+
+try {
+  const docRef = await setDoc(doc(db, "users", `${uuid}`), {["user_id"]: user_id}, {merge: true});
+} catch (e) {
+  console.error("Error adding document: ", e);
+}
 
 // X scale and Axis
 var x = d3.scaleLinear()
@@ -103,9 +110,9 @@ async function cover(svg, time) {
   await sleep(time*1000)
   svg.append("rect")
   .attr("x", x(-1))
-	.attr("y", y(80))
+	.attr("y", y(100))
 	.attr("width", x(49)-x(-1))
-	.attr("height", y(0)- y(80))
+	.attr("height", y(0)- y(100))
 	.attr("fill", d3.color(randomColor));
 }
 

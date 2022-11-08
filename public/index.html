@@ -27,8 +27,11 @@
   </script>
 </head>
 <body>
+  <header>
+    Welcome to our survey! 
+  </header>
   <div>
-    Welcome to our survey! In this survey, you will be prompted to make predictions for a total of 12 trend plots. Participant with the highest overall accuracy will receive a $15 amazon gift card. 
+    In this survey, you will be prompted to make predictions for a total of 12 trend plots. Participant with the highest overall accuracy will receive a $15 amazon gift card. 
   </div>
   <div>
     Here is an example of what a line plot might look like in our study: you will suggest your prediction by selecting 5 points on the right missing half.
@@ -45,8 +48,12 @@
     Good luck and have fun! 
   </div>
 </body>
+<label for="fname">Please enter your Profilic id:</label>
+<input type="text" id="fname" name="fname">
+
 <nav>
   <ul>
-    <a href="plot_experiment.html"> <button>Start</button></a>
+    <a href="plot_experiment.html" id = "survey-link"> <button id="start-button" disabled>Start</button></a>
   </ul>
 </nav>
+<script src="./js/input.js" type="module"></script>
