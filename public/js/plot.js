@@ -3,7 +3,7 @@
 // import Timer from "./timer.js";
 // =====================================================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js";
-import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore.js';
+import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore.js';
 const firebaseConfig = {
   apiKey: "AIzaSyAjyjdZQxPKki7o_bcD28DIvNvK1YDM7ZU",
   authDomain: "trend-survey.firebaseapp.com",
@@ -29,6 +29,7 @@ var x_start = 60
 var yrange = [0,100]
 var page = 0
 var expect_input_num = 1
+var uuid = Date.now()
 
 // X scale and Axis
 var x = d3.scaleLinear()
@@ -408,16 +409,15 @@ fetch(data_path)
     d3.selectAll('#plot').remove()
     page += 1
     console.log(user_data)
+    var plot_number = "plot" + page
+
+    try {
+      const docRef = await setDoc(doc(db, "users", `${uuid}`), {[plot_number]: user_data}, {merge: true});
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+
     if (page < Object.keys(all_plots).length) {
-      var plot_number = "plot" + page
-      try {
-        const docRef = await addDoc(collection(db, "users"), {
-          [plot_number]: user_data
-        });
-        console.log("Document written with ID: ", docRef.id);
-      } catch (e) {
-        console.error("Error adding document: ", e);
-      }
       render() // move to the next question
     } else {
       d3.selectAll('#question').remove()
