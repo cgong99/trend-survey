@@ -223,27 +223,6 @@ function toggleSubmit() {
 }
 
 
-// svg
-// .attr("pointer-events", "all")
-// .on("mousemove", function(){
-//   let pos = d3.mouse(this);
-//   var valid_pos = valid_mouse_pos(pos[0], pos[1])
-//   if (valid_pos[0] >= 0) {
-//     var pos_x = valid_pos[0]
-//     var pos_y = valid_pos[1]
-//     d3.select(this)
-//     .append("circle")
-//     .attr("id", "hint-circle")
-//     .attr("cx", x(pos_x))
-//     .attr("cy", y(pos_y))
-//     .attr("r", 5)
-//     .on("mouseleave", function(){ d3.select(this).selectAll("#hint-circle").remove()})
-//   }
-// })
-
-// svg.selectAll("#hint-circle")
-//   .on("mouseleave", function(){ d3.selectAll("#hint-circle").remove()})
-
 
 function submitPoints() {
   console.log("submit")

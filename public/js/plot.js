@@ -28,7 +28,8 @@ var xrange = [0,100]
 var x_start = 60
 var yrange = [0,100]
 var page = 0
-var expect_input_num = 1
+var plotInfo = ""
+var expect_input_num = 5       // enable submit after expected number
 var uuid = Date.now()
 
 // X scale and Axis
@@ -148,9 +149,6 @@ fetch(data_path)
   // ============================================== render function ====================================
   function render() {
     timer.restart()
-    document.getElementById("submit-button").addEventListener("click", submitPoints);
-    updatePlotCount(page+1)
-    disableSubmit()
     // Set data by page
     // var data = [ {x:10, y:20}, {x:30, y:90}, {x:50, y:50} ]
     console.log("render")
@@ -162,8 +160,12 @@ fetch(data_path)
     user_data = []
     user_data.push({x:data[data.length-1].x+0.4, y:data[data.length-1].y}) // add an offset to x to prevent overlapping
 
-    document.getElementById("info").innerHTML = "trend: " + curr_plot["data"] + " "+ plotType + " " + curr_plot["time"];
-
+    plotInfo = curr_plot["data"] + "-" + curr_plot["time"] + "-" + curr_plot["plotType"]
+    // console.log(plotInfo)
+    document.getElementById("info").innerHTML = plotInfo
+    document.getElementById("submit-button").addEventListener("click", submitPoints);
+    updatePlotCount(page+1)
+    disableSubmit()
     // create our outer SVG element with a size of 500x100 and select it
     var svg = d3.select("#scatter_area")
     .attr("align","center")
@@ -381,29 +383,6 @@ fetch(data_path)
     document.getElementById("submit-button").disabled = !document.getElementById("submit-button").disabled;
   }
 
-
-  // svg
-  // .attr("pointer-events", "all")
-  // .on("mousemove", function(){
-  //   let pos = d3.mouse(this);
-  //   var valid_pos = valid_mouse_pos(pos[0], pos[1])
-  //   if (valid_pos[0] >= 0) {
-  //     var pos_x = valid_pos[0]
-  //     var pos_y = valid_pos[1]
-  //     d3.select(this)
-  //     .append("circle")
-  //     .attr("id", "hint-circle")
-  //     .attr("cx", x(pos_x))
-  //     .attr("cy", y(pos_y))
-  //     .attr("r", 5)
-  //     .on("mouseleave", function(){ d3.select(this).selectAll("#hint-circle").remove()})
-  //   }
-  // })
-
-  // svg.selectAll("#hint-circle")
-  //   .on("mouseleave", function(){ d3.selectAll("#hint-circle").remove()})
-
-
   async function submitPoints() {
     console.log("submit")
     d3.selectAll('#plot').remove()
@@ -412,7 +391,7 @@ fetch(data_path)
     var plot_number = "plot" + page
 
     try {
-      const docRef = await setDoc(doc(db, "users", `${uuid}`), {[plot_number]: user_data}, {merge: true});
+      const docRef = await setDoc(doc(db, "users", `${uuid}`), {[plotInfo]: user_data}, {merge: true});
     } catch (e) {
       console.error("Error adding document: ", e);
     }

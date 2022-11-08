@@ -26,10 +26,27 @@
     const app = initializeApp(firebaseConfig);
   </script>
 </head>
+<body>
+  <div>
+    Welcome to our survey! In this survey, you will be prompted to make predictions for a total of 12 trend plots. Participant with the highest overall accuracy will receive a $15 amazon gift card. 
+  </div>
+  <div>
+    Here is an example of what a line plot might look like in our study: you will suggest your prediction by selecting 5 points on the right missing half.
+    Click on the axis to add a point and input a total of 5 points to complete a single trial. 
+  </div>
+  <img src="img/predict-trend.gif", width="300", height="300">
+
+  <div>Note that for all of the trials the left half of the line plot will be displayed and quickly masked after a certain time limit, 
+    but you will have unlimited time to make your prediction. 
+  </div>
+  <img src="img/trend.png", width="300", height="300">
+  <img src="img/covered.png", width="300", height="300">
+  <div>
+    Good luck and have fun! 
+  </div>
+</body>
 <nav>
   <ul>
-    <li><a href="plot_experiment.html">Scatter plot</a></li>
-    <li><a href="area-plot.html">Area Plot</a></li>
-    <!-- <li><a href="#">Links</a></li> -->
+    <a href="plot_experiment.html"> <button>Start</button></a>
   </ul>
 </nav>
