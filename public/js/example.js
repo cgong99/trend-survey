@@ -30,7 +30,8 @@ var orignal_y = d3.scaleLinear()
   .range(yrange)
 
 
-var data = [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50}, {x:50, y:60}]
+var data = [{x:0, y:45}, {x:5, y:50}, {x:10, y:20}, {x:15, y:30}, {x:20, y:40}, {x:25, y:37}, {x:30, y:50},
+            {x:35, y:46},{x:40, y:55},{x:45, y:60}, {x:50, y:60}]
 
 
 user_data = []
@@ -85,7 +86,7 @@ svg.append("path")
 .attr("stroke", randomColor)
 .attr("stroke-width", 1.5)
 .attr("d", d3.line()
-  .curve(d3.curveNatural) // Just add that to have a curve instead of segments
+  // .curve(d3.curveNatural) // Just add that to have a curve instead of segments
   .x(function(d) { return x(d.x) })
   .y(function(d) { return y(d.y) })
   )
@@ -178,7 +179,7 @@ svg
     .attr("stroke", randomColor)
     .attr("stroke-width", 1.5)
     .attr("d", d3.line()
-      .curve(d3.curveNatural) // Just add that to have a curve instead of segments
+      // .curve(d3.curveNatural) // Just add that to have a curve instead of segments
       .x(function(d) { return x(d.x) })
       .y(function(d) { return y(d.y) })
       )
