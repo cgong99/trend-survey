@@ -51,11 +51,48 @@
  </div>
     <div style="text-align: center; margin-top: 10%;">
       <nav>
-        <a href="plot_experiment.html">
+        <a id = "survey-link" href="plot_experiment.html">
           <button>Start Trials</button>
         </a>
       </nav>
     </div>
   </div>
 </body>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js";
+import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore.js';
+const firebaseConfig = {
+  apiKey: "AIzaSyAjyjdZQxPKki7o_bcD28DIvNvK1YDM7ZU",
+  authDomain: "trend-survey.firebaseapp.com",
+  projectId: "trend-survey",
+  storageBucket: "trend-survey.appspot.com",
+  messagingSenderId: "269130863233",
+  appId: "1:269130863233:web:a9444b1824f73455347380"
+};
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+  var curr_url = new URL(window.location.href)
+  var id = curr_url.searchParams.get("prolific_id");
+  var gender = curr_url.searchParams.get("gender");
+  var age = curr_url.searchParams.get("age");
+  var education = curr_url.searchParams.get("education");
+  var visfam = curr_url.searchParams.get("visfam");
+  console.log(education)
+
+try {
+  const docRef = await setDoc(doc(db, "users", `${id}`), {
+    user_id: id, 
+    gender: gender,
+    age: age,
+    education: education,
+    visfam: visfam
+  }, {merge: true});
+} catch (e) {
+  console.error("Error adding document: ", e);
+}
+const link = "plot_experiment.html?&prolific_id=" + id
+const survey_link = document.getElementById("survey-link")
+survey_link.setAttribute("href", link)
+</script>
 <script src="js/example.js"></script>

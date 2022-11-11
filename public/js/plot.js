@@ -28,16 +28,16 @@ var yrange = [0,100]
 var page = 0
 var plotInfo = ""
 var expect_input_num = 5       // enable submit after expected number
-var uuid = Date.now()
+// var uuid = Date.now()
 
 var curr_url = new URL(window.location.href)
-var user_id = curr_url.searchParams.get("identifier");
+var uuid = curr_url.searchParams.get("prolific_id");
 
-try {
-  const docRef = await setDoc(doc(db, "users", `${uuid}`), {["user_id"]: user_id}, {merge: true});
-} catch (e) {
-  console.error("Error adding document: ", e);
-}
+// try {
+//   const docRef = await setDoc(doc(db, "users", `${uuid}`), {["user_id"]: user_id}, {merge: true});
+// } catch (e) {
+//   console.error("Error adding document: ", e);
+// }
 
 // X scale and Axis
 var x = d3.scaleLinear()
