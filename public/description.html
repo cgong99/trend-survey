@@ -78,7 +78,6 @@ const db = getFirestore(app);
   var age = curr_url.searchParams.get("age");
   var education = curr_url.searchParams.get("education");
   var visfam = curr_url.searchParams.get("visfam");
-  console.log(education)
 
 try {
   const docRef = await setDoc(doc(db, "users", `${id}`), {
