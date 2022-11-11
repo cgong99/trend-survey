@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <script src="https://d3js.org/d3.v4.js"></script>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="css/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,7 +27,8 @@
       points on the right missing half.
       Click on the axis to add a point and input a total of 5 points to complete a single trial. <b>Make sure you select a total of 5 points or you will not be able to proceed. </b>
     </p>
-    <img style="margin-bottom: 5%;" src="img/predict-trend.gif" , width="300" , height="300">
+    <img style="margin-bottom: 5%; display: block; margin-left: auto; margin-right: auto;" 
+          src="img/predict-trend.gif" , width="300" , height="300">
     <hr>
 
     <div>Note that for all of the trials the left half of the line plot will be displayed and quickly masked after a
@@ -35,10 +37,19 @@
       but you will have unlimited time to make your prediction.
     </div>
     <div style="margin-bottom: 5%;">
-    <img src="img/trend.png" , width="300" , height="300">
-    <img src="img/covered.png" , width="300" , height="300">
+    <img style="margin-bottom: 5%; display: block; margin-left: auto; margin-right: auto;"
+         src="img/mask-block.gif" , width="300" , height="300">
+    <hr>
 </div>
     <div style="text-align: center; margin-top: 5%;">
+<div id="question" style="text-align: center;  font-size: 18px;">
+  <div style="margin-bottom: 5%;">Now Try it yourself!</div>
+  <div id="scatter_area"></div>
+  <div class="below-plot">
+    <!-- <button type="submit" class="plot-submit" id = "submit-button" >Submit</button> -->
+  </div>
+ </div>
+    <div style="text-align: center; margin-top: 10%;">
       <nav>
         <a href="plot_experiment.html">
           <button>Start Trials</button>
@@ -47,3 +58,4 @@
     </div>
   </div>
 </body>
+<script src="js/example.js"></script>
