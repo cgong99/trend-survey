@@ -396,9 +396,12 @@ fetch(data_path)
     page += 1
     console.log(user_data)
     var plot_number = "plot" + page
-
+    var plot_time = (Date.now() - start)/1000
+    user_data.push({"time":plot_time})
     try {
-      const docRef = await setDoc(doc(db, "users", `${uuid}`), {[plotInfo]: user_data}, {merge: true});
+      const docRef = await setDoc(doc(db, "users", `${uuid}`), {
+        [plotInfo]: user_data
+      }, {merge: true});
     } catch (e) {
       console.error("Error adding document: ", e);
     }
