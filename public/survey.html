@@ -11,64 +11,78 @@
   <div style="margin: 1rem 15% 1rem; font-family:Arial, Helvetica, sans-serif;">
     <img src="./img/Emory-University-Logo.png" style="display: block; margin-left: auto; margin-right:auto; width: 30%"
       alt="">
-  <h1 style="text-align: center; margin-bottom: 6%;">Please Answer the Questions</h1>
-  <hr>
-  <form name="survey_questions" onsubmit="return validation()" action="description.html">
-    <b><p>What is your Prolific ID?</p></b>
-    <input type="text" name="prolific_id">
-    
-    <b><p>What is your gender?</p></b>
-    <select id="gender" value="" type="text">
-      <option> -- select an option -- </option>
-      <option>Male</option>
-      <option>Female</option>
-      <option>Other</option>
-      <option>Prefer Not to Say</option>
-    </select>
+    <h1 style="text-align: center; margin-bottom: 6%;">Please Answer the Questions</h1>
+    <hr>
+    <form name="survey_questions" onsubmit="return validation()" action="description.html">
+      <b>
+        <p>What is your Prolific ID?</p>
+      </b>
+      <input type="text" name="prolific_id">
 
-    <b><p>What is your age?</p></b>
-    <input type="number" name="age">
+      <b>
+        <p>What is your gender?</p>
+      </b>
+      <select id="gender" value="" type="text">
+        <option> -- select an option -- </option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+        <option>Prefer Not to Say</option>
+      </select>
 
-    <b><p>What is your race/ethnicity?</p></b>
-    <select id="race" value="" type="text">
-      <option> -- select an option -- </option>
-      <option>White/Caucasian/European</option>
-      <option>Black/ African</option>
-      <option>East Asian</option>
-      <option>Indian</option>
-      <option>Pacific Islander</option>
-      <option>Hispanic</option>
-      <option>Arabian, Egyptian or Maghrebi</option>
-      <option>Native American</option>
-      <option>Australian Aboriginal</option>
-      <option>Other</option>
-      <option>Prefer Not to Say</option>
-    </select>
+      <b>
+        <p>What is your age?</p>
+      </b>
+      <input type="number" name="age">
 
-    <b><p>What is your education?</p></b>
-    <select id="education" value="" type="text">
-      <option> -- select an option -- </option>
-      <option>High School</option>
-      <option>Undergraduate</option>
-      <option>Masters</option>
-      <option>Doctorate</option>
-      <option>Other</option>
-      <option>Prefer Not to Say</option>
-    </select>
+      <b>
+        <p>What is your race/ethnicity?</p>
+      </b>
+      <select id="race" value="" type="text">
+        <option> -- select an option -- </option>
+        <option>White/Caucasian/European</option>
+        <option>Black/ African</option>
+        <option>East Asian</option>
+        <option>Indian</option>
+        <option>Pacific Islander</option>
+        <option>Hispanic</option>
+        <option>Arabian, Egyptian or Maghrebi</option>
+        <option>Native American</option>
+        <option>Australian Aboriginal</option>
+        <option>Other</option>
+        <option>Prefer Not to Say</option>
+      </select>
 
-    <b><p>What is your familiarity with data visualization?</p></b>
-    <select id="visfam" value="" type="text">
-      <option> -- select an option -- </option>
-      <option>Expert</option>
-      <option>Familiar</option>
-      <option>Amateur</option>
-      <option>No idea what it means</option>
-    </select>
-    <hr style="margin-top: 3%;">
-    <div style="text-align: center; margin-top: 6%;">
-      <button type="submit">Submit</button>
-</div>
-  </form></div>
+      <b>
+        <p>What is your education?</p>
+      </b>
+      <select id="education" value="" type="text">
+        <option> -- select an option -- </option>
+        <option>High School</option>
+        <option>Undergraduate</option>
+        <option>Masters</option>
+        <option>Doctorate</option>
+        <option>Other</option>
+        <option>Prefer Not to Say</option>
+      </select>
+
+      <b>
+        <p>What is your familiarity with data visualization?</p>
+      </b>
+      <select id="visfam" value="" type="text">
+        <option> -- select an option -- </option>
+        <option>Expert</option>
+        <option>Familiar</option>
+        <option>Amateur</option>
+        <option>No idea what it means</option>
+      </select>
+      <hr style="margin-top: 3%;">
+      <div style="text-align: center; margin-top: 6%;">
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+
   <script>
     function validation() {
       var id = document.forms.survey_questions.prolific_id.value;
@@ -81,29 +95,19 @@
       if (id == "") {
         window.alert("Please enter your Prolific ID.");
         return false;
-      }
-
-      else if (age == "") {
+      } else if (age == "") {
         alert("Please enter your age.");
         return false;
-      }
-
-      else if (race == 0) {
+      } else if (race == 0) {
         window.alert("Please select your race/ethnicity.");
         return false;
-      }
-
-      else if (gender == 0) {
+      } else if (gender == 0) {
         window.alert("Please select your gender.");
         return false;
-      }
-
-      else if (education == 0) {
+      } else if (education == 0) {
         window.alert("Please select your education.");
         return false;
-      }
-
-      else if (visfam == 0) {
+      } else if (visfam == 0) {
         window.alert("Please select your familiarity with data visualization.");
         return false;
       }
