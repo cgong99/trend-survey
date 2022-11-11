@@ -94,7 +94,7 @@ function updateHtmlTimer() {
   var delta = Date.now() - start; // milliseconds elapsed since start
   var time = (Math.round(delta/1000 * 100) / 100).toFixed(2) // format print time
   // console.log(time)
-  document.getElementById("timer").innerHTML = "Time: " + time;
+  // document.getElementById("timer").innerHTML = "Time: " + time;
 }
 
 var timer = new Timer(updateHtmlTimer, 100)
@@ -169,7 +169,7 @@ fetch(data_path)
 
     plotInfo = curr_plot["data"] + "-" + curr_plot["time"] + "-" + curr_plot["plotType"]
     // console.log(plotInfo)
-    document.getElementById("info").innerHTML = plotInfo
+    // document.getElementById("info").innerHTML = plotInfo
     document.getElementById("submit-button").addEventListener("click", submitPoints);
     updatePlotCount(page+1)
     disableSubmit()
