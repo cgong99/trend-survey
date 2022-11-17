@@ -1,9 +1,9 @@
 const margin = {top: 10, right: 40, bottom: 30, left: 30}
-const width = 450 - margin.left - margin.right
+const width = 600 - margin.left - margin.right
 const height = 400 - margin.top - margin.bottom
 
-var xrange = [0,100]
-var x_start = 60
+var xrange = [0,150]
+var x_start = 100
 var yrange = [0,100]
 var page = 0
 var expect_input_num = 5       // enable submit after expected number
@@ -29,8 +29,14 @@ var orignal_y = d3.scaleLinear()
   .domain([height,0])
   .range(yrange)
 
-
-var data = [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50}, {x:50, y:60}]
+const x_prior_range = [0,100,10]
+const y_prior_data = [20,23,35,50,45,35,38,45,48,53,58]
+var data = []
+for (let i = x_prior_range[0]; i<=x_prior_range[1];i+=x_prior_range[2]) {
+  data.push({x:i, y:y_prior_data[i/x_prior_range[2]]})
+}
+console.log(data)
+// var data = [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50}, {x:50, y:60}]
 
 
 user_data = []
@@ -48,7 +54,7 @@ var svg = d3.select("#scatter_area")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-const xAxisGrid = d3.axisBottom(x).tickSize(-height).tickFormat('').ticks(10);
+const xAxisGrid = d3.axisBottom(x).tickSize(-height).tickFormat('').ticks(15);
 const yAxisGrid = d3.axisLeft(y).tickSize(-width).tickFormat('').ticks(10);
 
 

@@ -19,11 +19,11 @@ const db = getFirestore(app);
 // ============================================ set up plot scale and variables =======================================
 
 const margin = {top: 10, right: 40, bottom: 30, left: 30}
-const width = 450 - margin.left - margin.right
+const width = 600 - margin.left - margin.right
 const height = 400 - margin.top - margin.bottom
 
-var xrange = [0,100]
-var x_start = 60
+var x_start = 100
+var xrange = [0,x_start*1.5]
 var yrange = [0,100]
 var page = 0
 var plotInfo = ""
@@ -111,7 +111,7 @@ async function cover(svg, time) {
   svg.append("rect")
   .attr("x", x(-1))
 	.attr("y", y(100))
-	.attr("width", x(49)-x(-1))
+	.attr("width", x(x_start)-x(-1))
 	.attr("height", y(0)- y(100))
 	.attr("fill", d3.color(randomColor));
 }
@@ -126,10 +126,25 @@ const plotTypes = ["line", "area"]
 const time = {"short":2,"long":5}
 const randomColor = colors[Math.floor(Math.random() * colors.length)]; // choose a random color from red green black
 console.log(randomColor)
-
-var all_data = [[{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:60}], 
-                [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:50}], 
-                [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:40}]]
+const x_prior_range = [0,100,10]
+// up netural down
+const y_prior_data = [[20,23,35,50,45,35,38,45,48,53,58],
+                      [50,58,66,55,53,48,45,43,53,50,51],
+                      [60,55,48,58,66,71,68,64,55,52,45]
+                    ]
+const all_data = []
+for (let j = 0; j < y_prior_data.length;j+=1) {
+  var tmp = []
+  for (let i = x_prior_range[0]; i <= x_prior_range[1];i+=x_prior_range[2]) {
+    tmp.push({x:i, y:y_prior_data[j][i/x_prior_range[2]]})
+  }
+  console.log("TMP", tmp)
+  all_data.push(tmp)
+}
+console.log("alldata", all_data)
+// var all_data = [[{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:60}], 
+//                 [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:50}], 
+//                 [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:40}]]
 
 const data_map = {"pos":all_data[0], "neu":all_data[1], "neg":all_data[2]}
 var user_data = []
@@ -188,7 +203,7 @@ fetch(data_path)
     // $("svg").css({top: 100, left: 100, position:'absolute'});
 
 
-    const xAxisGrid = d3.axisBottom(x).tickSize(-height).tickFormat('').ticks(10);
+    const xAxisGrid = d3.axisBottom(x).tickSize(-height).tickFormat('').ticks(15);
     const yAxisGrid = d3.axisLeft(y).tickSize(-width).tickFormat('').ticks(10);
 
     // Create grids.
