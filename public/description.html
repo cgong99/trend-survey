@@ -89,6 +89,7 @@ const db = getFirestore(app);
   var age = curr_url.searchParams.get("age");
   var education = curr_url.searchParams.get("education");
   var visfam = curr_url.searchParams.get("visfam");
+  var stockfam = curr_url.searchParams.get("stockfam");
 
 try {
   const docRef = await setDoc(doc(db, "users", `${id}`), {
@@ -96,7 +97,8 @@ try {
     gender: gender,
     age: age,
     education: education,
-    visfam: visfam
+    visfam: visfam,
+    stockfam: stockfam
   }, {merge: true});
 } catch (e) {
   console.error("Error adding document: ", e);
