@@ -44,31 +44,14 @@
       <img style="margin-bottom: 5%; display: block; margin-left: auto; margin-right: auto;" src="img/mask-block.gif" ,
         width="300" , height="300">
       <hr>
-      <h2>Context Description</h2>
-      <p>The data points given describes the trend of <b>daily average temperature in Seattle</b>. The chart's X-axis follows
-        chronological order
-        and represents a single observing day; Y-axis represents the magnitude of observed temperature in Fahrenheit. Your task is to 
-      predict the future temperature in the plot with above instructions. Note that the values are collected from a credible weather website.
-    This means data used in our study are <b>real world values</b>. Thus, it is anticipated that responses from all participants will result in varying accuracies. </p>
-    <p>Below is a demo of the task. All of your trials will resemble this trial. <p style="color: red;"> Make sure you play with it before officially starting the trials.</p></p>
-    </div>
-    <div style="text-align: center; margin-top: 5%;">
-      <div id="question" style="text-align: center;  font-size: 18px;">
-        <div style="margin-bottom: 5%;">Now Try it yourself!</div>
-        <div id="scatter_area"></div>
-        <div class="below-plot">
-          <!-- <button type="submit" class="plot-submit" id = "submit-button" >Submit</button> -->
-        </div>
-      </div>
-      <div style="text-align: center; margin-top: 10%;">
+      <div style="text-align: center; margin-top: 5%; margin-bottom: 5%;">
         <nav>
-          <a id="survey-link" href="plot_experiment.html">
-            <button>Start Trials</button>
+          <a id="survey-link" href="context.html">
+            <button>Proceed</button>
           </a>
         </nav>
       </div>
     </div>
-</body>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js";
 import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore.js';
@@ -103,7 +86,7 @@ try {
 } catch (e) {
   console.error("Error adding document: ", e);
 }
-const link = "plot_experiment.html?&prolific_id=" + id
+const link = "context.html?&prolific_id=" + id
 const survey_link = document.getElementById("survey-link")
 survey_link.setAttribute("href", link)
 </script>

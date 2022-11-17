@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div style="margin: 1rem 15% 1rem; font-family:Arial, Helvetica, sans-serif;">
+    <img src="./img/Emory-University-Logo.png"
+        style="display: block; margin-left: auto; margin-right:auto; width: 30%" alt="">
+    <div style=" margin-top: 2%;">
+            <h2>Now Try it yourself!</h2>
+        <div id="question" style="text-align: center; margin-top: 3rem;">
+            <div id="scatter_area"></div>
+            <div class="below-plot">
+                <!-- <button type="submit" class="plot-submit" id = "submit-button" >Submit</button> -->
+            </div>
+        </div>
+    <nav style="text-align: center; margin-top: 3rem;">
+        <a id="attention_link" href="attention.html">
+        <button>Proceed</button>
+        </a>
+    </nav>
+    </div>
+</body>
+
+</html>
+<script>
+    var curr_url = new URL(window.location.href)
+    var id = curr_url.searchParams.get("prolific_id")
+    const practice_link = document.getElementById("attention_link");
+    const link = "attention.html?&prolific_id=" + id;
+    practice_link.setAttribute("href", link)
+</script>
+<script src="js/example.js"></script>

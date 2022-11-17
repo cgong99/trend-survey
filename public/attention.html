@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body style="text-align: center; margin: 1rem 15% 1rem; font-family:Arial, Helvetica, sans-serif;">
+    <img src="./img/Emory-University-Logo.png"
+        style="display: block; margin-left: auto; margin-right:auto; width: 30%" alt="">
+      <b>
+        <h3>Select "purple" in below options.</h3>   
+      </b>
+      <select name="attention" id="attention" value="" type="text">
+        <option> -- select an option -- </option>
+        <option>Red</option>
+        <option>Blue</option>
+        <option>Purple</option>
+        <option>Green</option>
+      </select>
+    <nav>
+        <a id="survey_link" href="plot_experiment.html" >
+        <button onclick="link();" style="margin-top: 2rem;">Proceed</button>
+        </a>
+    </nav>
+</body>
+
+</html>
+
+<script>
+
+    function link() {
+        var attention = document.getElementById("attention").selectedIndex
+        var curr_url = new URL(window.location.href)
+        var id = curr_url.searchParams.get("prolific_id")
+        let value = 0
+
+        if (attention == 3) {
+            value = 1
+        }
+
+        const survey_link = document.getElementById("survey_link");
+        const link = "plot_experiment.html?&prolific_id=" + id + "?&value=" + value;
+        survey_link.setAttribute("href", link)
+    }
+</script>
