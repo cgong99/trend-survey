@@ -76,6 +76,18 @@
         <option>Amateur</option>
         <option>No idea what it means</option>
       </select>
+
+      <b>
+        <p>What is your experience with stock market?</p>
+      </b>
+      <select name="stockfam" id="stockfam" value="" type="text">
+        <option> -- select an option -- </option>
+        <option>Expert</option>
+        <option>Frequent</option>
+        <option>Amateur</option>
+        <option>Never</option>
+      </select>
+
       <hr style="margin-top: 3%;">
       <div style="text-align: center; margin-top: 6%;">
         <button type="submit">Submit</button>
@@ -91,6 +103,7 @@
       var education = document.getElementById("education").selectedIndex
       var race = document.getElementById("race").selectedIndex
       var visfam = document.getElementById("visfam").selectedIndex
+      var stockfam = document.getElementById("stockfam").selectedIndex
 
       if (id == "") {
         window.alert("Please enter your Prolific ID.");
@@ -110,9 +123,12 @@
       } else if (visfam == 0) {
         window.alert("Please select your familiarity with data visualization.");
         return false;
+      } else if(stockfam == 0) {
+        window.alert("Please select your experience with stock market.");
+        return false;
       }
 
-      return true
+      return true;
 
     }
   </script>

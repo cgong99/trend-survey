@@ -128,10 +128,10 @@ const randomColor = colors[Math.floor(Math.random() * colors.length)]; // choose
 console.log(randomColor)
 const x_prior_range = [0,100,10]
 // up netural down
-const y_prior_data = [[20,23,35,50,45,35,38,45,48,53,58],
-                      [50,58,66,55,53,48,45,43,53,50,51],
-                      [60,55,48,58,66,71,68,64,55,52,45]
-                    ]
+const u = [42.29,	45.11,	40.44,	33.56,	26.44,	23.78,	21.33,	25.56,	33.56,	50.07,	58.89] //	66.22	75.56				
+const n = [58.99,	60.21,	67.99,	73.48,	73.02,	62.50,	54.73,	52.13,	54.88,	56.25,	53.96] //	45.73	41.62	38.87	42.68					]
+const d = [83.47,	76.46,	73.40,	71.77,	75.17,	81.70,	83.47,	80.14,	70.00,	55.10,	42.11]	//33.54	27.07	29.39	30.68					
+const y_prior_data = [u,n,d]
 const all_data = []
 for (let j = 0; j < y_prior_data.length;j+=1) {
   var tmp = []
