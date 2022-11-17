@@ -1,3 +1,5 @@
+// Created by Chen Gong 11/2022
+
 const margin = {top: 10, right: 40, bottom: 30, left: 30}
 const width = 600 - margin.left - margin.right
 const height = 400 - margin.top - margin.bottom

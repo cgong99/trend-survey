@@ -32,3 +32,15 @@ button:disabled {
   background-color: #cccccc;
   color: #666666;
 }
+
+#Progress {
+  width: 100%;
+  background-color: white;
+  margin-bottom: 10px;
+}
+
+#Bar {
+  /* width: 1%; */
+  height: 2px;
+  /* background-color: green; */
+}

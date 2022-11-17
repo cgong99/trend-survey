@@ -1,3 +1,5 @@
+// Created by Chen Gong 11/2022
+
 const input = document.querySelector('input');
 const startButton = document.getElementById("start-button");
 var link = document.getElementById('survey-link');
