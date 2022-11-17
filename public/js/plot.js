@@ -18,12 +18,12 @@ const db = getFirestore(app);
 
 // ============================================ set up plot scale and variables =======================================
 
-const margin = {top: 10, right: 40, bottom: 30, left: 30}
-const width = 450 - margin.left - margin.right
+const margin = {top: 20, right: 40, bottom: 30, left: 40}
+const width = 600 - margin.left - margin.right
 const height = 400 - margin.top - margin.bottom
 
-var xrange = [0,100]
-var x_start = 60
+var x_start = 10
+var xrange = [0,x_start*1.5]
 var yrange = [0,100]
 var page = 0
 var plotInfo = ""
@@ -106,14 +106,19 @@ function sleep(ms) {
 
 // cover original plot after n seconds
 async function cover(svg, time) {
-  console.log("waiting")
+  // console.log("waiting")
   await sleep(time*1000)
   svg.append("rect")
-  .attr("x", x(-1))
+  .attr("x", x(0.01))
 	.attr("y", y(100))
-	.attr("width", x(49)-x(-1))
+	.attr("width", x(x_start)-x(-0.01))
 	.attr("height", y(0)- y(100))
 	.attr("fill", d3.color(randomColor));
+}
+
+function updateProgressBar(color, page) {
+  document.getElementById("Bar").style.backgroundColor = color;
+  document.getElementById("Bar").style.width = String(100*page/12) + "%"
 }
 
 function updatePlotCount(count) {
@@ -126,10 +131,25 @@ const plotTypes = ["line", "area"]
 const time = {"short":2,"long":5}
 const randomColor = colors[Math.floor(Math.random() * colors.length)]; // choose a random color from red green black
 console.log(randomColor)
-
-var all_data = [[{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:60}], 
-                [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:50}], 
-                [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:40}]]
+const x_prior_range = [0,10,1]
+// up netural down
+const u = [42.29,	45.11,	40.44,	33.56,	26.44,	23.78,	21.33,	25.56,	33.56,	50.07,	58.89] //	66.22	75.56				
+const n = [58.99,	60.21,	67.99,	73.48,	73.02,	62.50,	54.73,	52.13,	54.88,	56.25,	53.96] //	45.73	41.62	38.87	42.68					]
+const d = [83.47,	76.46,	73.40,	71.77,	75.17,	81.70,	83.47,	80.14,	70.00,	55.10,	42.11]	//33.54	27.07	29.39	30.68					
+const y_prior_data = [u,n,d]
+const all_data = []
+for (let j = 0; j < y_prior_data.length;j+=1) {
+  var tmp = []
+  for (let i = x_prior_range[0]; i <= x_prior_range[1];i+=x_prior_range[2]) {
+    tmp.push({x:i, y:y_prior_data[j][i/x_prior_range[2]]})
+  }
+  // console.log("TMP", tmp)
+  all_data.push(tmp)
+}
+// console.log("alldata", all_data)
+// var all_data = [[{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:60}], 
+//                 [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:50}], 
+//                 [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:40}]]
 
 const data_map = {"pos":all_data[0], "neu":all_data[1], "neg":all_data[2]}
 var user_data = []
@@ -141,7 +161,7 @@ const data_path = 'https://raw.githubusercontent.com/cgong99/trend-survey/main/p
 fetch(data_path)
   .then((response) => response.json())
   .then((data) => {
-  console.log(data)
+  console.log("data fetched")
   var all_plots = []
   
   for (let key in data) {
@@ -149,13 +169,13 @@ fetch(data_path)
     all_plots.push(data[key])
   }
   all_plots = shuffleArray(all_plots)
-  console.log(all_plots)
+  // console.log(all_plots)
 
   render()
 
   // ============================================== render function ====================================
   function render() {
-    timer.restart()
+    timer = timer.restart()
     // Set data by page
     // var data = [ {x:10, y:20}, {x:30, y:90}, {x:50, y:50} ]
     console.log("render")
@@ -165,14 +185,15 @@ fetch(data_path)
     var timeLimit = time[curr_plot["time"]]
     var plotType = curr_plot["plotType"]
     user_data = []
-    user_data.push({x:data[data.length-1].x+0.4, y:data[data.length-1].y}) // add an offset to x to prevent overlapping
+    user_data.push({x:data[data.length-1].x+0.04, y:data[data.length-1].y}) // add an offset to x to prevent overlapping
 
     plotInfo = curr_plot["data"] + "-" + curr_plot["time"] + "-" + curr_plot["plotType"]
     // console.log(plotInfo)
     // document.getElementById("info").innerHTML = plotInfo
     document.getElementById("submit-button").addEventListener("click", submitPoints);
-    updatePlotCount(page+1)
+    // updatePlotCount(page+1)
     disableSubmit()
+    updateProgressBar(randomColor, page+1)
     // create our outer SVG element with a size of 500x100 and select it
     var svg = d3.select("#scatter_area")
     .attr("align","center")
@@ -188,7 +209,7 @@ fetch(data_path)
     // $("svg").css({top: 100, left: 100, position:'absolute'});
 
 
-    const xAxisGrid = d3.axisBottom(x).tickSize(-height).tickFormat('').ticks(10);
+    const xAxisGrid = d3.axisBottom(x).tickSize(-height).tickFormat('').ticks(15);
     const yAxisGrid = d3.axisLeft(y).tickSize(-width).tickFormat('').ticks(10);
 
     // Create grids.
@@ -203,13 +224,31 @@ fetch(data_path)
     // x y axis
     svg
     .append('g')
+    .attr("class", "x")
     .attr("transform", "translate(" + 0 + "," + height + ")")
-    .call(d3.axisBottom(x)); // remove number .tickFormat("");
+    .call(d3.axisBottom(x)) // remove number .tickFormat("");
+    .call(g => g.append("text")
+        .attr("x", width+40)
+        .attr("y", margin.bottom-10)
+        .style("font", "14px times")
+        .attr("text-anchor", "end")
+        .text("Time(Day)"))
+    
+
     svg
     .append('g')
-    .call(d3.axisLeft(y));
+    .attr("class", "y")
+    .call(d3.axisLeft(y))
+    .call(g => g.append("text")
+    .attr("x", -margin.left)
+    .attr("y", margin.top-30)
+    .style("font", "14px times")
+    .attr("text-anchor", "start")
+    .text("Price($)"))
 
-
+        svg.selectAll("text")
+        .style("fill", "black");
+    
 
     // Add all dots 
     // svg
@@ -264,7 +303,7 @@ fetch(data_path)
 
 
     // create all hint point transparent for now, listen for mouse event 
-    for (let i = x_start; i <= xrange[1]; i+=10) {
+    for (let i = x_start+1; i <= xrange[1]; i+=1) {
       for (let j = 0; j <= yrange[1]; j+=10) {
         svg.append("circle")
         .attr("id", "hint-point")
@@ -303,12 +342,15 @@ fetch(data_path)
     }
 
     function valid_mouse_pos(raw_x, raw_y) {
-      for (let i = x_start; i <= xrange[1]; i+=10) {
+      for (let i = x_start+1; i <= xrange[1]; i+=1) {
         for (let j = 0; j <= yrange[1]; j+=10) {
-          var dis = distance(orignal_x(raw_x), orignal_y(raw_y), i, j);
-          if (dis <= 3) {
+          
+          // console.log("original", orignal_x(raw_x), orignal_y(raw_y))
+          var dis = distance(raw_x, raw_y, x(i), y(j));
+          if (dis <= 10) {
             // console.log("valid")
             // console.log(i,j);
+            // console.log(raw_x, raw_y)
             return [i, j];
           }
         }
@@ -325,7 +367,7 @@ fetch(data_path)
       let pos = d3.mouse(this);
       console.log(pos)
       var valid_pos = valid_mouse_pos(pos[0], pos[1]) // check if mouse position is valid (on grid)
-      console.log(valid_pos)
+      // console.log(valid_pos)
       if (valid_pos[0] >= 0) {
         var pos_x = valid_pos[0]
         var pos_y = valid_pos[1]
@@ -394,10 +436,11 @@ fetch(data_path)
     console.log("submit")
     d3.selectAll('#plot').remove()
     page += 1
-    console.log(user_data)
     var plot_number = "plot" + page
     var plot_time = (Date.now() - start)/1000
+    console.log("Time", plot_time)
     user_data.push({"time":plot_time})
+    user_data.push({"color":randomColor})
     try {
       const docRef = await setDoc(doc(db, "users", `${uuid}`), {
         [plotInfo]: user_data
