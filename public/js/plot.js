@@ -106,7 +106,7 @@ function sleep(ms) {
 
 // cover original plot after n seconds
 async function cover(svg, time) {
-  console.log("waiting")
+  // console.log("waiting")
   await sleep(time*1000)
   svg.append("rect")
   .attr("x", x(0.01))
@@ -146,7 +146,7 @@ for (let j = 0; j < y_prior_data.length;j+=1) {
   // console.log("TMP", tmp)
   all_data.push(tmp)
 }
-console.log("alldata", all_data)
+// console.log("alldata", all_data)
 // var all_data = [[{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:60}], 
 //                 [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:50}], 
 //                 [{x:0, y:50}, {x:10, y:60}, {x:20, y:40}, {x:30, y:50}, {x:40, y:50},  {x:50, y:40}]]
@@ -161,7 +161,7 @@ const data_path = 'https://raw.githubusercontent.com/cgong99/trend-survey/main/p
 fetch(data_path)
   .then((response) => response.json())
   .then((data) => {
-  console.log(data)
+  console.log("data fetched")
   var all_plots = []
   
   for (let key in data) {
@@ -169,13 +169,13 @@ fetch(data_path)
     all_plots.push(data[key])
   }
   all_plots = shuffleArray(all_plots)
-  console.log(all_plots)
+  // console.log(all_plots)
 
   render()
 
   // ============================================== render function ====================================
   function render() {
-    timer.restart()
+    timer = timer.restart()
     // Set data by page
     // var data = [ {x:10, y:20}, {x:30, y:90}, {x:50, y:50} ]
     console.log("render")
@@ -185,7 +185,7 @@ fetch(data_path)
     var timeLimit = time[curr_plot["time"]]
     var plotType = curr_plot["plotType"]
     user_data = []
-    user_data.push({x:data[data.length-1].x+0.05, y:data[data.length-1].y}) // add an offset to x to prevent overlapping
+    user_data.push({x:data[data.length-1].x+0.04, y:data[data.length-1].y}) // add an offset to x to prevent overlapping
 
     plotInfo = curr_plot["data"] + "-" + curr_plot["time"] + "-" + curr_plot["plotType"]
     // console.log(plotInfo)
@@ -436,10 +436,11 @@ fetch(data_path)
     console.log("submit")
     d3.selectAll('#plot').remove()
     page += 1
-    console.log(user_data)
     var plot_number = "plot" + page
     var plot_time = (Date.now() - start)/1000
+    console.log("Time", plot_time)
     user_data.push({"time":plot_time})
+    user_data.push({"color":randomColor})
     try {
       const docRef = await setDoc(doc(db, "users", `${uuid}`), {
         [plotInfo]: user_data
