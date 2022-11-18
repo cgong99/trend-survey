@@ -112,7 +112,7 @@ svg.append("path")
 .attr("stroke", randomColor)
 .attr("stroke-width", 1.5)
 .attr("d", d3.line()
-  // .curve(d3.curveNatural) // Just add that to have a curve instead of segments
+  .curve(d3.curveNatural) // Just add that to have a curve instead of segments
   .x(function(d) { return x(d.x) })
   .y(function(d) { return y(d.y) })
   )
@@ -205,7 +205,7 @@ svg
     .attr("stroke", randomColor)
     .attr("stroke-width", 1.5)
     .attr("d", d3.line()
-      // .curve(d3.curveNatural) // Just add that to have a curve instead of segments
+      .curve(d3.curveNatural) // Just add that to have a curve instead of segments
       .x(function(d) { return x(d.x) })
       .y(function(d) { return y(d.y) })
       )
