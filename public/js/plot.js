@@ -32,12 +32,15 @@ var expect_input_num = 5       // enable submit after expected number
 
 var curr_url = new URL(window.location.href)
 var uuid = curr_url.searchParams.get("prolific_id");
+var attention = curr_url.searchParams.get("value");
 
-// try {
-//   const docRef = await setDoc(doc(db, "users", `${uuid}`), {["user_id"]: user_id}, {merge: true});
-// } catch (e) {
-//   console.error("Error adding document: ", e);
-// }
+try {
+  const docRef = await setDoc(doc(db, "users", `${uuid}`), {
+    ["attention"]: attention
+  }, {merge: true});
+} catch (e) {
+  console.error("Error adding document: ", e);
+}
 
 // X scale and Axis
 var x = d3.scaleLinear()
@@ -226,7 +229,7 @@ fetch(data_path)
     .append('g')
     .attr("class", "x")
     .attr("transform", "translate(" + 0 + "," + height + ")")
-    .call(d3.axisBottom(x)) // remove number .tickFormat("");
+    .call(d3.axisBottom(x).tickFormat("")) // remove number .tickFormat("");
     .call(g => g.append("text")
         .attr("x", width+40)
         .attr("y", margin.bottom-10)
@@ -422,10 +425,12 @@ fetch(data_path)
 
   function enableSubmit() {
     document.getElementById("submit-button").disabled = false
+    document.getElementById("submit-button").innerHTML= "Next"
   }
 
   function disableSubmit() {
     document.getElementById("submit-button").disabled = true
+    document.getElementById("submit-button").innerHTML= "Please select all 5 points"
   }
 
   function toggleSubmit() {

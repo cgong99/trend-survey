@@ -1,15 +1,15 @@
 // Created by Chen Gong 11/2022
 
-const margin = {top: 10, right: 40, bottom: 30, left: 30}
+
+const margin = {top: 20, right: 40, bottom: 30, left: 40}
 const width = 600 - margin.left - margin.right
 const height = 400 - margin.top - margin.bottom
 
-var xrange = [0,150]
-var x_start = 100
+var x_start = 10
+var xrange = [0,x_start*1.5]
 var yrange = [0,100]
-var page = 0
 var expect_input_num = 5       // enable submit after expected number
-var uuid = Date.now()
+
 const randomColor = "black"
 const plotType = "line"
 
@@ -31,7 +31,7 @@ var orignal_y = d3.scaleLinear()
   .domain([height,0])
   .range(yrange)
 
-const x_prior_range = [0,100,10]
+const x_prior_range = [0,10,1]
 const y_prior_data = [20,23,35,50,45,35,38,45,48,53,58]
 var data = []
 for (let i = x_prior_range[0]; i<=x_prior_range[1];i+=x_prior_range[2]) {
@@ -42,7 +42,7 @@ console.log(data)
 
 
 user_data = []
-user_data.push({x:data[data.length-1].x+0.4, y:data[data.length-1].y}) // add an offset to x to prevent overlapping
+user_data.push({x:data[data.length-1].x+0.04, y:data[data.length-1].y}) // add an offset to x to prevent overlapping
 
 // create our outer SVG element with a size of 500x100 and select it
 var svg = d3.select("#scatter_area")
@@ -72,11 +72,30 @@ svg.append('g')
 // x y axis
 svg
 .append('g')
+.attr("class", "x")
 .attr("transform", "translate(" + 0 + "," + height + ")")
-.call(d3.axisBottom(x)); // remove number .tickFormat("");
+.call(d3.axisBottom(x).tickFormat("")) // remove number .tickFormat("");
+.call(g => g.append("text")
+    .attr("x", width+40)
+    .attr("y", margin.bottom-10)
+    .style("font", "14px times")
+    .attr("text-anchor", "end")
+    .text("Time(Day)"))
+
+
 svg
 .append('g')
-.call(d3.axisLeft(y));
+.attr("class", "y")
+.call(d3.axisLeft(y))
+.call(g => g.append("text")
+  .attr("x", -margin.left)
+  .attr("y", margin.top-30)
+  .style("font", "14px times")
+  .attr("text-anchor", "start")
+  .text("Price($)"))
+
+svg.selectAll("text")
+.style("fill", "black");
 
 svg
 .append("circle")
@@ -100,7 +119,7 @@ svg.append("path")
 
 
 // create all hint point transparent for now, listen for mouse event 
-for (let i = x_start; i <= xrange[1]; i+=10) {
+for (let i = x_start+1; i <= xrange[1]; i+=1) {
   for (let j = 0; j <= yrange[1]; j+=10) {
     svg.append("circle")
     .attr("id", "hint-point")
@@ -140,12 +159,12 @@ function distance(x1, y1, x2, y2) {
 }
 
 function valid_mouse_pos(raw_x, raw_y) {
-  for (let i = x_start; i <= xrange[1]; i+=10) {
+  for (let i = x_start+1; i <= xrange[1]; i+=1) {
     for (let j = 0; j <= yrange[1]; j+=10) {
-      var dis = distance(orignal_x(raw_x), orignal_y(raw_y), i, j);
-      if (dis <= 3) {
+      var dis = distance(raw_x, raw_y, x(i), y(j));
+      if (dis <= 10) {
         // console.log("valid")
-        // console.log(i,j);
+        console.log(i,j);
         return [i, j];
       }
     }
@@ -203,5 +222,25 @@ svg
       .y0(y(0))
       .y1(function(d) { return y(d.y) })
       )
-  }
+  };
+  setButton();
+
 })
+
+function checkProceed() {
+  if (user_data.length < expect_input_num+1) {
+
+  }
+}
+
+function setButton() {
+  var button = document.getElementById('Proceed');
+  if (user_data.length >= expect_input_num+1) {
+    button.disabled = false;
+  }
+  if (button.disabled) {
+    button.innerText = 'Please predict all 5 points';
+  } else {
+    button.innerText = 'Proceed';
+  }
+}
