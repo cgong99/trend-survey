@@ -17,17 +17,38 @@
             average shows a stock's closing price over a number of trading days. An example of moving average plot of
             Google over a month (from Oct 17, 2022 to Nov 17, 2022) looks like the <b style="color:blue;">blue
                 line</b> in below image (where the blue arrow points at). Note that the moving average reflects a
-            smoother trend of stock prices, in contrast to general price of the stock (red line in the image) that is more volatile.
+            smoother trend of stock prices, in contrast to general price of the stock (red line in the image) that is
+            more volatile.
         </p>
         <div style="text-align: center;">
             <img src="./img/ma_example.png" alt="" style="width: 80%; margin-top: 3rem; margin-bottom: 3rem;"></div>
         <hr>
         <h2>Our Study</h2>
-        <p>In our study, we selected <b>true data points</b> collected from Robinhood that reflect the moving average of
-            some stocks over approximately 3 months. However, the stocks used in our study are <b>anonymized</b> and you
+        <p>In our study, we selected <b>real data</b> collected from Robinhood that reflect the moving average of
+            some stocks from the most recent 3 months. However, the stocks used in our study are <b>anonymized</b> and
+            you
             will not be shown names of the stocks.
-            In each plot, x-axis describes time and y-axis describes closing price of the stock <b>scaled into values
-                between 0 and 100</b>. Your task is to predict the future stock price. An example of plots used in our
+            In each plot:</p>
+        <ul>
+            <li>
+                y-axis describes moving average of the stock <b>scaled into values
+                    between 0 and 100</b>.
+            </li>
+            <li>
+                x-axis describes a time range of 75 days.
+            </li>
+            <li>
+                Note that you will only be shown y values of the first 50 days.
+            </li>
+        </ul>
+        <b style="color:red;">Your goal is to most
+            accurately predict the next 25 days of
+            moving average of the stock price.</b>
+        <p>Your prediction will be collected and compared with true data.
+            <b>Top 10% of participants with the highest accuracy will receive a <b style="color: red;">bonus reward of $2</b>
+                from
+                our study.</b> An example of
+            plots used in our
             study looks like this:</p>
         <div style="text-align: center;">
             <img src="./img/plot_example.png" alt="" style="width: 50%">
