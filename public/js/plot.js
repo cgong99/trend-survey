@@ -25,7 +25,7 @@ const height = 400 - margin.top - margin.bottom
 var x_start = 10
 var xrange = [0,x_start*1.5]
 var yrange = [0,100]
-var page = 11
+var page = 0
 var plotInfo = ""
 var expect_input_num = 5       // enable submit after expected number
 // var uuid = Date.now()
@@ -125,7 +125,7 @@ function updateProgressBar(color, page) {
 }
 
 function updatePlotCount(count) {
-  document.getElementById("plot_num").innerHTML = "Plot: " + count;
+  document.getElementById("plot_num").innerHTML = "Plot: " + count + "/12";
 }
 
 // ======================================== Get all plots ============================
@@ -194,7 +194,7 @@ fetch(data_path)
     // console.log(plotInfo)
     // document.getElementById("info").innerHTML = plotInfo
     document.getElementById("submit-button").addEventListener("click", submitPoints);
-    // updatePlotCount(page+1)
+    updatePlotCount(page+1)
     disableSubmit()
     updateProgressBar(randomColor, page+1)
     // create our outer SVG element with a size of 500x100 and select it
