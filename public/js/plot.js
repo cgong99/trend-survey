@@ -25,7 +25,7 @@ const height = 400 - margin.top - margin.bottom
 var x_start = 10
 var xrange = [0,x_start*1.5]
 var yrange = [0,100]
-var page = 0
+var page = 11
 var plotInfo = ""
 var expect_input_num = 5       // enable submit after expected number
 // var uuid = Date.now()
@@ -456,14 +456,32 @@ fetch(data_path)
 
     if (page < Object.keys(all_plots).length) {
       render() // move to the next question
+    } else if (page = Object.keys(all_plots).length){
+      d3.selectAll('#question').remove()
+      document.getElementById("optional-questions").style.display = "inline";
+      document.getElementById("optionalSubmit").addEventListener("click",submitOptional);
     } else {
       d3.selectAll('#question').remove()
       document.getElementById("end").style.display = "inline";
+
     }
   }
 });
 
-
+async function submitOptional() {
+  const q1 = document.getElementById("Q1").value;
+  const q2 = document.getElementById("Q2").value;
+  document.getElementById("optional-questions").style.display = "none";
+  document.getElementById("end").style.display = "inline";
+  try {
+    const docRef = await setDoc(doc(db, "users", `${uuid}`), {
+      ["q1"]: q1,
+      ["q2"]:q2
+    }, {merge: true});
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
 
 /* Randomize array in-place using Durstenfeld shuffle algorithm */
 function shuffleArray(array) {
