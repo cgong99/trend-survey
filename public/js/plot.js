@@ -125,7 +125,7 @@ function updateProgressBar(color, page) {
 }
 
 function updatePlotCount(count) {
-  document.getElementById("plot_num").innerHTML = "Plot: " + count;
+  document.getElementById("plot_num").innerHTML = "Plot: " + count + "/12";
 }
 
 // ======================================== Get all plots ============================
@@ -194,7 +194,7 @@ fetch(data_path)
     // console.log(plotInfo)
     // document.getElementById("info").innerHTML = plotInfo
     document.getElementById("submit-button").addEventListener("click", submitPoints);
-    // updatePlotCount(page+1)
+    updatePlotCount(page+1)
     disableSubmit()
     updateProgressBar(randomColor, page+1)
     // create our outer SVG element with a size of 500x100 and select it
@@ -456,14 +456,32 @@ fetch(data_path)
 
     if (page < Object.keys(all_plots).length) {
       render() // move to the next question
+    } else if (page = Object.keys(all_plots).length){
+      d3.selectAll('#question').remove()
+      document.getElementById("optional-questions").style.display = "inline";
+      document.getElementById("optionalSubmit").addEventListener("click",submitOptional);
     } else {
       d3.selectAll('#question').remove()
       document.getElementById("end").style.display = "inline";
+
     }
   }
 });
 
-
+async function submitOptional() {
+  const q1 = document.getElementById("Q1").value;
+  const q2 = document.getElementById("Q2").value;
+  document.getElementById("optional-questions").style.display = "none";
+  document.getElementById("end").style.display = "inline";
+  try {
+    const docRef = await setDoc(doc(db, "users", `${uuid}`), {
+      ["q1"]: q1,
+      ["q2"]:q2
+    }, {merge: true});
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
 
 /* Randomize array in-place using Durstenfeld shuffle algorithm */
 function shuffleArray(array) {
