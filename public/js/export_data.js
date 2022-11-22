@@ -26,7 +26,7 @@ querySnapshot.forEach((doc) => {
 
 function download(filename, text) {
     var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(text));
     element.setAttribute('download', filename);
   
     element.style.display = 'none';
@@ -37,4 +37,4 @@ function download(filename, text) {
     document.body.removeChild(element);
   }
 
-download('test.txt', Content);
+download('test.json', Content);
